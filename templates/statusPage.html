@@ -1,34 +1,101 @@
 <html>
+<head>
+    <title>Port Scanner dashboard</title>
+    <script>
+        function hideDown() {
+            let btn = document.getElementById("hideButton");
+            if (btn.value == "unhide") {
+                for (let element of document.getElementsByClassName("down")){
+                    element.style.display="";
+                }
+                btn.innerHTML = "Hide closed ports";
+                btn.value = "hide";
+            } else {
+                for (let element of document.getElementsByClassName("down")){
+                    element.style.display="none";
+                }
+                btn.innerHTML = "Unhide closed ports";
+                btn.value = "unhide";
+            }
+        };
+    </script>
 
-<body>
     <style>
-        .result {
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            padding: 10px;
+        }
+
+        button {
+            padding: 5px;
+            float: right;
+        }
+        table {
+            margin: 0 auto;
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        td.first {
+            _position: sticky;
+            _background-color: white;
+            display: block;
+            width: 250px;
+            padding: 5px;
+            height: 40px;
+        }
+
+        td.result {
+            display: block-inline;
             padding: 5px;
             writing-mode: vertical-lr;
             border-width: 1px;
             text-align: center;
             border-radius: 5px;
+            height: 40px;
+            border-style: dotted;
         }
 
         .down {
-            background-color: red;
+            color: lightgrey;
+            max-width: 10px;
+            _display: none;
         }
 
         .up {
             background-color: greenyellow;
+            width: 30px;
+            border-style: solid;
+            border-color: black;
         }
     </style>
+</head>
+<body>
+    <nav>
+        <button onclick="hideDown()" id="hideButton">Hide closed ports</button>
+    </nav>
 
-<table>
-    {{ range . }}
-    <tr>
-        <td>{{ .Host }}</td>
-        {{ range .Results -}}
-        <td class="result {{ isUp .Status }}" alt="{{ .Status }}">{{ .Port }}</td>
-        {{ end }}
-    </tr>
-    {{ end }}
-</table>
+    <content>
+        <table>
+            {{ range . }}
+            <tr>
+                <td class="first">{{ .Host }}</td>
+                {{ range .Results -}}
+                <td class="result {{ isUp .Status }}" alt="{{ .Status }}">{{ .Port }}</td>
+                {{ end }}
+            </tr>
+            {{ end }}
+        </table>  
+    </content>
+
+    <footer>
+        <pre>
+            Made by Marek Sirovy
+
+            Source code: https://github.com/theztd/port-scanner
+        </pre>
+    </footer>
 
 </body>
 </html>

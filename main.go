@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"sync"
 )
 
 func main() {
@@ -48,11 +49,32 @@ func main() {
 	}
 	defer inFile.Close()
 
+	// Start reading file
 	scan := bufio.NewScanner(inFile)
+
+	// Initialize WaitGroup
+	var wg sync.WaitGroup
+
 	for scan.Scan() {
-		h := scan.Text()
-		data = append(data, portScan(h, pRange))
+		// Add wait group counter for each line
+		wg.Add(1)
+
+		// Paralel run
+		go func(host string) {
+			// Finish wait group (countdown wait group)
+			defer wg.Done()
+
+			// Run host scanning
+			log.Println("INFO: Start scanning ", host)
+			data = append(data, portScan(host, pRange))
+			log.Println("INFO: Done scanning ", host)
+		}(scan.Text())
+
 	}
 
+	// Wait till waitgroup will be 0
+	wg.Wait()
+
+	// Render results
 	renderResults(data)
 }
