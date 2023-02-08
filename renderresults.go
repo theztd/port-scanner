@@ -5,8 +5,6 @@ import (
 	"text/template"
 )
 
-var templateFile string = "statusPage.htm"
-
 func renderResults(data []hostStatus) {
 	t := template.New("").Funcs(template.FuncMap{
 		"isUp": func(str string) string {

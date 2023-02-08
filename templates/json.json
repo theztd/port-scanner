@@ -1,0 +1,13 @@
+{
+{{ range . }}
+    "{{ .Host }}": [
+    {{ range .Results }}
+        {
+            "Status": "{{ isUp .Status }}",
+            "Message": "{{ .Status }}",
+            "Port": "{{ .Port }}
+        },
+    {{ end }}
+    ]
+{{ end }}
+}

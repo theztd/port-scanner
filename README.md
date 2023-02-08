@@ -19,6 +19,31 @@ Usage of portscanner:
         Name of the output template file (file have to be present under ./template directory).
 ```
 
-# Own template
+## Examples
 
-Simply add your template file to the templates directory. And provide your template name as a parametr
+
+### Generate report as a html page
+
+You can send this html page via email, put it to the cloudflare, ...
+
+```bash
+portscanner -quick -in servers.txt > /var/www/nginx/status/openports-$(date +%F).html
+```
+
+
+### Generate json output
+
+```bash
+portscanner -quick -in servers.txt -template json.json  > data.json
+```
+Than you can sent it via curl to any api endpoint or object storage.
+
+### Generate prometheus output
+
+```bash
+portscanner -quick -in servers.txt -template prometheus.tpl  > textfile_portscanner.prom
+```
+
+### Own template
+
+Simply add your template file to the templates directory. And provide your template name as a parametr ;-)
