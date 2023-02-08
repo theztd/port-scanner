@@ -7,7 +7,7 @@ Scan defined ip's for open ports
 
 ![./images/printscreen.png](./images/printscreen.png)
 
-Look at [./status.html](status.html) file whih is example result...
+Look at [./example-status.htm](example-status.htm) file. It is an example of the result...
 
 ## Usage
 
