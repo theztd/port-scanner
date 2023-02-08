@@ -1,9 +1,11 @@
 package main
 
 import (
-	"html/template"
 	"os"
+	"text/template"
 )
+
+var templateFile string = "statusPage.htm"
 
 func renderResults(data []hostStatus) {
 	t := template.New("").Funcs(template.FuncMap{
@@ -15,7 +17,7 @@ func renderResults(data []hostStatus) {
 			}
 		},
 	})
-	t.ParseGlob("templates/*.html")
+	t.ParseGlob("templates/*")
 
-	t.ExecuteTemplate(os.Stdout, "statusPage.html", data)
+	t.ExecuteTemplate(os.Stdout, templateFile, data)
 }

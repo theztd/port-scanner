@@ -19,8 +19,10 @@ func main() {
 
 	flag.StringVar(&inPath, "in", "", "Path to the file with hosts (One line = one host)")
 	flag.StringVar(&outPath, "out", "", "Path to the output file.")
+	flag.StringVar(&outPath, "template", "", "Name of the output template file (file have to be present under ./template directory).")
 	flag.BoolVar(&quick, "quick", false, "Do only fast scan (predefined most common ports)")
 	flag.BoolVar(&full, "full", false, "Scan everything from 1-65535 (Super slow)")
+
 	flag.Parse()
 
 	if quick {
