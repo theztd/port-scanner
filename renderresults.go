@@ -1,11 +1,15 @@
 package main
 
 import (
+	"embed"
 	"os"
 	"text/template"
 )
 
-func renderResults(data []hostStatus) {
+//go:embed templates
+var templatesFS embed.FS
+
+func renderResults(data []hostStatus, customTemplate string) {
 	t := template.New("").Funcs(template.FuncMap{
 		"isUp": func(str string) string {
 			if str == "Open" {
@@ -15,7 +19,14 @@ func renderResults(data []hostStatus) {
 			}
 		},
 	})
-	t.ParseGlob("templates/*")
+	// t.ParseGlob("templates/*")
+	t.ParseFS(templatesFS, "templates/*")
 
-	t.ExecuteTemplate(os.Stdout, templateFile, data)
+	// use custom template
+	if customTemplate != "" {
+		t.ParseFiles(customTemplate)
+		t.ExecuteTemplate(os.Stdout, templateName, data)
+	} else {
+		t.ExecuteTemplate(os.Stdout, templateName, data)
+	}
 }

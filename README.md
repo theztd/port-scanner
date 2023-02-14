@@ -14,15 +14,17 @@ Look at [./example-status.htm](example-status.htm) file. It is an example of the
 ```bash
 Usage of portscanner:
   -full
-        Scan everything from 1-65535 (Super slow)
+    	Scan everything from 1-65535 (Super slow)
   -in string
-        Path to the file with hosts (One line = one host)
+    	Path to the file with hosts (One line = one host)
   -out string
-        Path to the output file.
+    	Path to the output file.
   -quick
-        Do only fast scan (predefined most common ports)
+    	Do only fast scan (predefined most common ports)
   -template string
-        Name of the output template file (file have to be present under ./template directory).
+    	Name of the output template (build in are: json, prometheus, html). (default "html")
+  -template-file string
+    	Path to the custom template file.
 ```
 
 ## Examples
@@ -40,16 +42,20 @@ portscanner -quick -in servers.txt > /var/www/nginx/status/openports-$(date +%F)
 ### Generate json output
 
 ```bash
-portscanner -quick -in servers.txt -template json.json  > data.json
+portscanner -quick -in servers.txt -template json  > data.json
 ```
 Than you can sent it via curl to any api endpoint or object storage.
 
 ### Generate prometheus output
 
 ```bash
-portscanner -quick -in servers.txt -template prometheus.tpl  > textfile_portscanner.prom
+portscanner -quick -in servers.txt -template prometheus  > textfile_portscanner.prom
 ```
 
 ### Own template
 
-Simply add your template file to the templates directory. And provide your template name as a parametr ;-)
+Simply add your template by parametr -template-file. And provide your template name as a parametr ;-)
+
+```bash
+portscanner -quick -in servers.txt -template template.json -template-file ./my_templates/template.json
+```

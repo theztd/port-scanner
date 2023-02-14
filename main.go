@@ -9,7 +9,7 @@ import (
 	"sync"
 )
 
-var inPath, outPath, templateFile string
+var inPath, outPath, templateName, customTemplateFile string
 var quick, full bool
 
 func main() {
@@ -20,9 +20,10 @@ func main() {
 
 	flag.StringVar(&inPath, "in", "", "Path to the file with hosts (One line = one host)")
 	flag.StringVar(&outPath, "out", "", "Path to the output file.")
-	flag.StringVar(&templateFile, "template", "statusPage.htm", "Name of the output template file (file have to be present under ./template directory).")
+	flag.StringVar(&templateName, "template", "html", "Name of the output template (build in are: json, prometheus, html).")
 	flag.BoolVar(&quick, "quick", false, "Do only fast scan (predefined most common ports)")
 	flag.BoolVar(&full, "full", false, "Scan everything from 1-65535 (Super slow)")
+	flag.StringVar(&customTemplateFile, "template-file", "", "Path to the custom template file.")
 
 	flag.Parse()
 
@@ -79,5 +80,5 @@ func main() {
 	wg.Wait()
 
 	// Render results
-	renderResults(data)
+	renderResults(data, customTemplateFile)
 }
