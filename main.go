@@ -3,49 +3,46 @@ package main
 import (
 	"bufio"
 	"flag"
+	"fmt"
 	"log"
 	"os"
-	"strconv"
 	"sync"
 )
 
-var inPath, outPath, templateName, customTemplateFile string
-var quick, full bool
+var inPath, outPath, templateName, customTemplateFile, customPorts string
+
+//var quick, full bool
 
 func main() {
-	log.Println("INFO: Application started")
-
 	var pRange []string
 	var data []hostStatus
+
+	// default ports have to be scan
+	ports := "1-1200,1900,2049,2379-2380,2483,2484,3306,3389,4646,5000-5005,5060,5432,6379,6443,6881,6999,8080,8300,8500,9200,9300,9100,10250,10257,10259,30000-32767"
 
 	flag.StringVar(&inPath, "in", "", "Path to the file with hosts (One line = one host)")
 	flag.StringVar(&outPath, "out", "", "Path to the output file.")
 	flag.StringVar(&templateName, "template", "html", "Name of the output template (build in are: json, prometheus, html).")
-	flag.BoolVar(&quick, "quick", false, "Do only fast scan (predefined most common ports)")
-	flag.BoolVar(&full, "full", false, "Scan everything from 1-65535 (Super slow)")
 	flag.StringVar(&customTemplateFile, "template-file", "", "Path to the custom template file.")
+	flag.StringVar(&customPorts, "ports", ports, "Custom port definition (example \"22,80,443,9100-9200,5432\")")
 
 	flag.Parse()
 
-	if quick {
-		for _, p := range []int{21, 22, 23, 25, 53, 80, 110, 123, 143, 389, 443} {
-			pRange = append(pRange, strconv.Itoa(p))
-		}
-	} else if full {
-		for i := 1; i < 65536; i++ {
-			pRange = append(pRange, strconv.Itoa(i))
-		}
+	//
+	if len(customPorts) > 2 {
+		pRange = customPortsToRange(customPorts)
 	} else {
-		for i := 21; i < 1024; i++ {
-			pRange = append(pRange, strconv.Itoa(i))
-		}
+		pRange = customPortsToRange(ports)
 	}
 
-	if !full {
-		for _, p := range []int{1900, 2049, 3306, 3389, 4646, 5000, 5001, 5004, 5005, 5060, 6379, 8080, 8300, 8500, 9999, 5432, 9200, 9300, 9100} {
-			pRange = append(pRange, strconv.Itoa(p))
-		}
+	if len(inPath) < 1 {
+		fmt.Printf("\nFATAL: Missing arguments!!!\n\nPlease read help and try it again...\n")
+		flag.PrintDefaults()
+		os.Exit(1)
 	}
+
+	log.Println("INFO: Application started")
+	log.Println("INFO: Scanning ports:", pRange)
 
 	inFile, err := os.Open(inPath)
 	if err != nil {
