@@ -43,7 +43,7 @@
             display: block;
             width: 250px;
             padding: 5px;
-            height: 40px;
+            height: 45px;
         }
 
         td.result {
@@ -53,7 +53,7 @@
             border-width: 1px;
             text-align: center;
             border-radius: 5px;
-            height: 40px;
+            height: 45px;
             border-style: dotted;
         }
 
