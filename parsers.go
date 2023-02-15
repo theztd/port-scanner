@@ -5,7 +5,23 @@ import (
 	"strings"
 )
 
-func customPortsToRange(customPorts string) (portList []string) {
+func tagParser(tagsIn string) (tags []Tag) {
+	for _, tPair := range strings.Split(tagsIn, ",") {
+		k_v := strings.Split(tPair, ":")
+		tags = append(tags, Tag{Name: k_v[0], Value: k_v[1]})
+	}
+	return tags
+}
+
+func portsToRange(customPorts string) (portList []string) {
+	/*
+		Convert string like "80,443,1000-1005,9100"
+
+		to
+
+		[]strings{80,443,1000,1001,1002,1003,1004,1005,9100}
+
+	*/
 	_ports := strings.Split(customPorts, ",")
 	for _, p := range _ports {
 		if strings.Contains(p, "-") {

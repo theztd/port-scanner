@@ -2,8 +2,10 @@
 # TYPE portscanner_opened_ports gauge
 # HELP portscanner_closed_ports Information about closed ports
 # TYPE portscanner_closed_ports gauge
+# HELP portscanner_scan_duration Host scanning duration in miliseconds
+# TYPE portscanner_scan_duration gauge
 {{ range . }}
-portscanner_opened_ports{{"{"}}address="{{ .Host }}"{{"}"}} {{ .OpenCount }}
+portscanner_opened_ports{{"{"}}address="{{ .Host }}"{{ range .Tags -}},{{.Name}}={{.Value}}{{end}}{{"}"}} {{ .OpenCount }}
 portscanner_closed_ports{{"{"}}address="{{ .Host }}"{{"}"}} {{ .CloseCount }}
-
+portscanner_scan_duration{{"{"}}address="{{ .Host }}"{{"}"}} {{ .Duration }}
 {{ end }}

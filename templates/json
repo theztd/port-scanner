@@ -1,13 +1,20 @@
 {
 {{ range . }}
-    "{{ .Host }}": [
-    {{ range .Results }}
+    "{{ .Host }}": {
+        "Tags": {
+            {{ range .Tags }}
+            "{{ .Name }}": "{{ .Value }}",
+            {{ end }}
+        },
+        "Results": [
+        {{ range .Results }}
         {
             "Status": "{{ isUp .Status }}",
             "Message": "{{ .Status }}",
             "Port": "{{ .Port }}
         },
-    {{ end }}
-    ]
+        {{ end }}
+        ]
+    }
 {{ end }}
 }

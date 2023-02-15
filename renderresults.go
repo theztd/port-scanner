@@ -9,7 +9,9 @@ import (
 //go:embed templates
 var templatesFS embed.FS
 
-func renderResults(data []hostStatus, customTemplate string) {
+func renderResults(data []hostStatus, templateName, customTemplate string, out *os.File) {
+
+	// Init demplate
 	t := template.New("").Funcs(template.FuncMap{
 		"isUp": func(str string) string {
 			if str == "Open" {
@@ -19,14 +21,15 @@ func renderResults(data []hostStatus, customTemplate string) {
 			}
 		},
 	})
+
 	// t.ParseGlob("templates/*")
 	t.ParseFS(templatesFS, "templates/*")
 
 	// use custom template
 	if customTemplate != "" {
 		t.ParseFiles(customTemplate)
-		t.ExecuteTemplate(os.Stdout, templateName, data)
+		t.ExecuteTemplate(out, templateName, data)
 	} else {
-		t.ExecuteTemplate(os.Stdout, templateName, data)
+		t.ExecuteTemplate(out, templateName, data)
 	}
 }

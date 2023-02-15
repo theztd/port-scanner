@@ -10,16 +10,24 @@ type portStatus struct {
 	Status string
 }
 
+type Tag struct {
+	Name  string
+	Value string
+}
+
 type hostStatus struct {
 	Host       string
 	Results    []portStatus
 	OpenCount  uint
 	CloseCount uint
+	Duration   uint
+	Tags       []Tag
 }
 
-func portScan(host string, ports []string) (status hostStatus) {
+func portScan(host string, ports []string, tags []Tag) (status hostStatus) {
 	timeout := 100 * time.Millisecond
 	status.Host = host
+	startTime := uint(time.Now().UnixMilli())
 
 	for _, port := range ports {
 
@@ -40,6 +48,8 @@ func portScan(host string, ports []string) (status hostStatus) {
 		}
 
 		status.Results = append(status.Results, s)
+		status.Duration = uint(time.Now().UnixMilli()) - startTime
+		status.Tags = tags
 	}
 
 	return status

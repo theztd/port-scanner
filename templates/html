@@ -80,7 +80,7 @@
         <table>
             {{ range . }}
             <tr>
-                <td class="first">{{ .Host }}</td>
+                <td class="first"><strong>{{ .Host }}</strong><br>({{ range .Tags }}{{.Value}}{{ end }})</td>
                 {{ range .Results -}}
                 <td class="result {{ isUp .Status }}" alt="{{ .Status }}">{{ .Port }}</td>
                 {{ end }}
