@@ -5,7 +5,7 @@
 # HELP portscanner_scan_duration Host scanning duration in miliseconds
 # TYPE portscanner_scan_duration gauge
 {{ range . }}
-portscanner_opened_ports{{"{"}}address="{{ .Host }}"{{ range .Tags -}},{{.Name}}={{.Value}}{{end}}{{"}"}} {{ .OpenCount }}
-portscanner_closed_ports{{"{"}}address="{{ .Host }}"{{"}"}} {{ .CloseCount }}
-portscanner_scan_duration{{"{"}}address="{{ .Host }}"{{"}"}} {{ .Duration }}
+portscanner_opened_ports{{"{"}}address="{{ .Host }}"{{ range .Tags -}},{{.Name}}="{{.Value}}"{{end}}{{"}"}} {{ .OpenCount }}
+portscanner_closed_ports{{"{"}}address="{{ .Host }}"{{ range .Tags -}},{{.Name}}="{{.Value}}"{{end}}{{"}"}} {{ .CloseCount }}
+portscanner_scan_duration{{"{"}}address="{{ .Host }}"{{ range .Tags -}},{{.Name}}="{{.Value}}"{{end}}{{"}"}} {{ .Duration }}
 {{ end }}

@@ -37,21 +37,21 @@ Usage of portscanner:
 You can send this html page via email, put it to the cloudflare, ...
 
 ```bash
-portscanner -quick -in servers.txt > /var/www/nginx/status/openports-$(date +%F).html
+portscanner -ports "22,80,443,9100-9500,6443,4646" -in servers.txt -out /var/www/nginx/status/openports-$(date +%F).html -prom /var/metrics/portscanner.ptom
 ```
 
 
 ### Generate json output
 
 ```bash
-portscanner -quick -in servers.txt -template json  > data.json
+portscanner -in servers.txt -template json  > data.json
 ```
 Than you can sent it via curl to any api endpoint or object storage.
 
 ### Generate prometheus output
 
 ```bash
-portscanner -quick -in servers.txt -template prometheus  > textfile_portscanner.prom
+portscanner -in servers.txt -template prometheus  > textfile_portscanner.prom
 ```
 
 ### Own template
@@ -59,5 +59,5 @@ portscanner -quick -in servers.txt -template prometheus  > textfile_portscanner.
 Simply add your template by parametr -template-file. And provide your template name as a parametr ;-)
 
 ```bash
-portscanner -quick -in servers.txt -template template.json -template-file .my_templates/template.json
+portscanner -in servers.txt -template template.json -template-file .my_templates/template.json
 ```
