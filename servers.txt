@@ -1,4 +1,3 @@
-n1.fejk.net
-www.seznam.cz
-www.root.cz
-www.google.com
+seznam.cz
+root.cz
+google.com

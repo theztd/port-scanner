@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"sync"
 )
 
@@ -95,7 +96,12 @@ func main() {
 	// Wait till waitgroup will be 0
 	wg.Wait()
 
-	fmt.Println(data)
+	// sort results by hostname
+	sort.Slice(data, func(i, j int) bool {
+		return data[i].Host < data[j].Host
+	})
+
+	// fmt.Println(data)
 
 	// Write prom metrics from measurement if promFile is defined
 	if len(promFile) > 1 {
